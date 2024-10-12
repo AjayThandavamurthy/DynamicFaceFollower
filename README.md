@@ -1,25 +1,23 @@
 # DynamicFaceFollower
 
-DynamicFaceFollower is a face tracking project that uses OpenCV for real-time face detection via a webcam and controls servos to follow the detected face. This project can be integrated with Arduino to create a dynamic face-following mechanism.
+DynamicFaceFollower is a face tracking project that uses computer vision techniques to detect and follow a person's face using a webcam. The project integrates OpenCV for image processing and Arduino for servo control, allowing for dynamic face tracking in real-time.
 
 ## Features
 
-- Real-time face detection using Haar Cascade Classifier.
-- Dynamic servo control to follow the face's movement.
-- Communication between Python and Arduino via Serial.
+- Real-time face detection using Haar cascades.
+- Movement detection through background subtraction.
+- Face landmark detection with depth estimation using CVZone.
+- Communication with Arduino for servo control based on face position.
+- Visual feedback on distance to the detected face.
 
 ## Requirements
 
-### Hardware
-
-- Webcam
-- Arduino (with compatible servos)
-- Two servos for horizontal and vertical movement
-
-### Software
-
 - Python 3.x
-- OpenCV
-- NumPy
-- Arduino IDE
-- VarSpeedServo library for Arduino
+- Arduino IDE (for uploading the Arduino code)
+
+### Python Libraries
+
+Make sure to install the required Python libraries. You can use the provided `requirements.txt` file:
+
+```bash
+pip install -r requirements.txt
