@@ -1,76 +1,54 @@
-#include <VarSpeedServo.h>
-VarSpeedServo servo1; VarSpeedServo servo2;
-String inputString = "";         // a string to hold incoming data
-unsigned int cont=0;
 
-void setup() 
+#include <Servo.h>
+Servo servoVer; //Vertical Servo
+Servo servoHor; //Horizontal Servo
+int x;
+int y;
+int prevX;
+int prevY;
+void setup()
 {
-  servo1.attach(9);
-  servo2.attach(10);
-
-  Serial.begin(250000);
-  Serial.println("Ready");
+  Serial.begin(9600);
+  servoVer.attach(9); //Attach Vertical Servo to Pin 5
+  servoHor.attach(10); //Attach Horizontal Servo to Pin 6
+  servoVer.write(90);
+  servoHor.write(90);
+  pinMode(6, OUTPUT);
 }
-
-
-void loop() 
+void Pos()
 {
-
-  signed int vel;
-  unsigned int pos;
-  
-  if (Serial.available()) 
+  if(prevX != x || prevY != y)
   {
-    inputString = Serial.readStringUntil('!');
-    vel = inputString.toInt();   
-
-    if(inputString.endsWith("x"))
+    int servoX = map(x, 600, 0, 70, 179);
+    int servoY = map(y, 450, 0, 179, 95);
+    servoX = min(servoX, 109);
+    servoX = max(servoX, 55);
+    servoY = min(servoY, 179);
+    servoY = max(servoY, 10);
+    
+    servoHor.write(servoX);
+    servoVer.write(servoY);
+  }
+}
+void loop()
+{
+  if(Serial.available() > 0)
+  {
+    
+    if(Serial.read() == 'X')
     {
-      if (vel > 2)
-        servo1.write(180, vel, false);    
-      else if (vel < -2)
-        servo1.write(0, -vel, false);    
-      else
+      digitalWrite(6, HIGH);
+      x = Serial.parseInt();
+      if(Serial.read() == 'Y')
       {
-        pos = servo1.read();
-        servo1.write(pos, 255, false);       
-      } 
-    }
-    else if(inputString.endsWith("y"))
-    {
-      if (vel > 2)
-        servo2.write(180, vel, false);    
-      else if (vel < -2)
-        servo2.write(0, -vel, false);    
-      else
-      {
-        pos = servo2.read();
-        servo2.write(pos, 255, false);       
-      } 
-    }
-    else if(inputString.endsWith("o"))
-    {
-      cont++;
-      if (cont >= 100)
-      {
-        pos = servo1.read();
-        servo1.write(90, 20, true);        
-        pos = servo2.read();
-        servo2.write(70 , 20, true);
-        cont = 0;
- 
+        y = Serial.parseInt();
+        y = y+90;
+       Pos();
       }
-      else
-      {
-        pos = servo1.read();
-        servo1.write(pos, 255, false);        
-        pos = servo2.read();
-        servo2.write(pos, 255, false);
-      }
-      
-            
     }
-    inputString = "";
-
+    while(Serial.available() > 0)
+    {
+      Serial.read();
+    }
   }
 }
