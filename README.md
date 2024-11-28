@@ -12,7 +12,7 @@ DynamicFaceFollower is a face tracking project that uses computer vision techniq
 
 ## Live model
 
-![Demo Model](images/Demo Model.jpg)
+![Demo Model](/Demo_image.jpg)
 
 ## Requirements
 
